@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Common.References;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -74,8 +75,43 @@ namespace CopyRepositoryOutput
       }
 
       string dest = Path.Combine(dir, name);
+      if (File.Exists(dest))
+      {
+        var key1 = GetKey(src);
+        var key2 = GetKey(dest);
+        if (KeysAreEqual(key1, key2))
+        {
+          Console.Write("\tSkipping {0}", name);
+          return;
+        }
+      }
+
       Console.WriteLine("\t{0} => {1}", name, dest);
       File.Copy(src, dest, true);
+    }
+
+    private static bool KeysAreEqual(byte[] key1, byte[] key2)
+    {
+      if (key1.Length != key2.Length)
+        return false;
+
+      int len = key1.Length;
+      for (int i = 0; i < len; ++i)
+      {
+        if (key1[i] != key2[i])
+          return false;
+      }
+
+      return true;
+    }
+
+    private static byte[] GetKey(string filepath)
+    {
+      using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
+      {
+        var byteArray = File.ReadAllBytes(filepath);
+        return sha1.ComputeHash(byteArray);
+      }
     }
   }
 }
