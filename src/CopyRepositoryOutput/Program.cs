@@ -64,6 +64,10 @@ namespace CopyRepositoryOutput
           CopyFileTo(dll, destination);
         }
       }
+
+      Console.WriteLine();
+      Console.Write("Press any key to continue...");
+      Console.Read();
     }
 
     private static void CopyFileTo(string src, string dir)
