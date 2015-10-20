@@ -63,6 +63,7 @@ namespace CopyRepositoryOutput
         {
           CopyFileTo(dll, destination);
         }
+        Console.WriteLine("");
       }
 
       Console.WriteLine();
@@ -85,7 +86,7 @@ namespace CopyRepositoryOutput
         var key2 = GetKey(dest);
         if (KeysAreEqual(key1, key2))
         {
-          Console.Write("\tSkipping {0}", name);
+          Console.WriteLine("\tSkipping {0}", name);
           return;
         }
       }
