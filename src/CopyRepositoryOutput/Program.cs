@@ -15,55 +15,68 @@ namespace CopyRepositoryOutput
   {
     static void Main(string[] args)
     {
-      string path = Application.StartupPath;
-      string dropbox = Dropbox.Location;
+      var path = Application.StartupPath;
+      var dropbox = Dropbox.Location;
 
       var repositories = Directory.EnumerateDirectories(path);
       foreach (var repo in repositories)
       {
-        string ignore = Path.Combine(repo, ".ignore");
-        if (File.Exists(ignore))
-        {
-          continue;
-        }
+        Console.WriteLine("=== {0} ===", Path.GetFileNameWithoutExtension(repo));
 
         var bin = Path.Combine(repo, "bin");
         if (!Directory.Exists(bin))
         {
           Console.WriteLine("{0} does not contain a bin directory", repo);
+          Console.WriteLine();
           continue;
         }
 
-        string partial = "Programs";
+        var partial = "Programs";
+        var patterns = new string[] { "*.exe", "*.dll" };
+        var ignore = false;
 
-        var config = Path.Combine(repo, "cro.txt");
+        var config = Path.Combine(repo, "cro.xml");
         if (File.Exists(config))
         {
-          partial = File.ReadAllText(config).Trim();
+          var element = XElement.Parse(File.ReadAllText(config));
+          ReadConfig(element, 
+            ref partial, 
+            ref patterns, 
+            ref ignore);
+        }
+
+        if (ignore)
+        {
+          Console.WriteLine("Ignoring {0}", repo);
+          Console.WriteLine();
+          continue;
         }
 
         var repoName = new DirectoryInfo(repo).Name;
 
-        string destination = Path.Combine(dropbox, partial, repoName);
+        var destination = Path.Combine(dropbox, partial, repoName);
         if (!Directory.Exists(destination))
         {
           Directory.CreateDirectory(destination);
         }
 
+        int files = 0;
+
         Console.WriteLine("Destination: {0}", destination);
-
-        var exes = Directory.EnumerateFiles(bin, "*.exe");
-        foreach (var exe in exes)
+        foreach (var pattern in patterns)
         {
-          CopyFileTo(exe, destination);
+          var values = Directory.EnumerateFiles(bin, pattern);
+          foreach (var value in values)
+          {
+            if(CopyFileTo(value, destination))
+            {
+            ++files;
+            }
+          }
         }
 
-        var dlls = Directory.EnumerateFiles(bin, "*.dll");
-        foreach (var dll in dlls)
-        {
-          CopyFileTo(dll, destination);
-        }
-        Console.WriteLine("");
+        Console.WriteLine("Copied {0} files", files);
+        Console.WriteLine();
       }
 
       Console.WriteLine();
@@ -71,12 +84,45 @@ namespace CopyRepositoryOutput
       Console.Read();
     }
 
-    private static void CopyFileTo(string src, string dir)
+    private static void ReadConfig(XElement element, ref string partial, ref string[] patterns, ref bool ignore)
+    {
+      var attrIgnore = element.Attribute("ignore");
+      if (attrIgnore != null && (attrIgnore.Value == "yes" || attrIgnore.Value == "true"))
+      {
+        ignore = true;
+        return;
+      }
+
+      var attrType = element.Attribute("type");
+      if (attrType != null && attrType.Value == "nuget")
+      {
+        patterns = new[] { "*.nupkg" };
+        partial = "[nuget]";
+        return;
+      }
+
+      var attrPatterns = element.Attribute("patterns");
+      if (attrPatterns != null && !string.IsNullOrWhiteSpace(attrPatterns.Value))
+      {
+        patterns = attrPatterns.Value
+          .Split(';')
+          .Select(p => p.Trim())
+          .ToArray();
+      }
+
+      var attrPath = element.Attribute("path");
+      if (attrPath != null && !string.IsNullOrWhiteSpace(attrPath.Value))
+      {
+        partial = attrPath.Value.Trim();
+      }
+    }
+
+    private static bool CopyFileTo(string src, string dir)
     {
       string name = Path.GetFileName(src);
       if (name.EndsWith("vshost.exe"))
       {
-        return;
+        return false;
       }
 
       string dest = Path.Combine(dir, name);
@@ -87,12 +133,13 @@ namespace CopyRepositoryOutput
         if (KeysAreEqual(key1, key2))
         {
           Console.WriteLine("\tSkipping {0}", name);
-          return;
+          return false;
         }
       }
 
       Console.WriteLine("\t{0} => {1}", name, dest);
       File.Copy(src, dest, true);
+      return true;
     }
 
     private static bool KeysAreEqual(byte[] key1, byte[] key2)
