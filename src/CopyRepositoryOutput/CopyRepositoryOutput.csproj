@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7BE5F591-24F6-47B1-A929-0AD1811E2365}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CopyRepositoryOutput</RootNamespace>
     <AssemblyName>CopyRepositoryOutput</AssemblyName>
@@ -34,10 +34,14 @@
   <PropertyGroup>
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,16 +50,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tools\Dropbox.cs" />
+    <Compile Include="Data\CroSettings.cs" />
+    <Compile Include="Data\ExtensibleDataObject.cs" />
+    <Compile Include="Dialogs\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CroInfo.cs" />
+    <Compile Include="Data\CroInfoNode.cs" />
+    <Compile Include="Data\CroInfoType.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Dialogs\RunnerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RunnerForm.Designer.cs">
+      <DependentUpon>RunnerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\DataContractFile.cs" />
+    <Compile Include="Tools\Dropbox.cs" />
+    <Compile Include="Tools\ProgressExtensions.cs" />
+    <Compile Include="Tools\VistaFolderBrowserDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dialogs\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RunnerForm.resx">
+      <DependentUpon>RunnerForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)..\..\" /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
