@@ -38,6 +38,8 @@ namespace CopyRepositoryOutput
 
         foreach (var cro in data)
         {
+          cro.NormalizeAndWrite();
+
           var info = new FileInfo(cro.Filepath);
           var repoDir = info.Directory;
 
@@ -120,7 +122,7 @@ namespace CopyRepositoryOutput
       }
       catch (Exception ex)
       {
-        output.WriteLine("\tCouldn't copy {0} because {1}", ex.Message);
+        output.WriteLine("\tCouldn't copy {0} because {1}", name, ex.Message);
       }
 
       return copied;

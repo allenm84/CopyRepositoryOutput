@@ -76,5 +76,16 @@ namespace CopyRepositoryOutput
 
       File.WriteAllText(mFilepath, element.ToString());
     }
+
+    public void NormalizeAndWrite()
+    {
+      if (Type == CroInfoType.NuGet)
+      {
+        Patterns = new[] { "*.nupkg" };
+        Partial = "[nuget]";
+      }
+
+      Write();
+    }
   }
 }
