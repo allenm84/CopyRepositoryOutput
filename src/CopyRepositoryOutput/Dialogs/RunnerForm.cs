@@ -38,7 +38,7 @@ namespace CopyRepositoryOutput
 
         foreach (var cro in data)
         {
-          cro.NormalizeAndWrite();
+          cro.Write();
 
           var info = new FileInfo(cro.Filepath);
           var repoDir = info.Directory;

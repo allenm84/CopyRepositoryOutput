@@ -17,17 +17,17 @@ namespace CopyRepositoryOutput
     {
       mFilepath = filepath;
 
+      Type = CroInfoType.Default;
       Partial = "Programs";
       Patterns = new string[] { "*.exe", "*.dll" };
-      Type = CroInfoType.Default;
     }
 
     [Browsable(false)]
     public string Filepath { get { return mFilepath; } }
 
+    public CroInfoType Type { get; set; }
     public string Partial { get; set; }
     public string[] Patterns { get; set; }
-    public CroInfoType Type { get; set; }
 
     public void Read()
     {
@@ -42,10 +42,6 @@ namespace CopyRepositoryOutput
       if (attrType != null)
       {
         Type = (CroInfoType)Enum.Parse(typeof(CroInfoType), attrType.Value, true);
-        if (Type != CroInfoType.Default)
-        {
-          return;
-        }
       }
 
       Patterns = element
@@ -57,6 +53,39 @@ namespace CopyRepositoryOutput
       if (attrPath != null && !string.IsNullOrWhiteSpace(attrPath.Value))
       {
         Partial = attrPath.Value.Trim();
+      }
+
+      Normalize();
+    }
+
+    public void Normalize()
+    {
+      switch (Type)
+      {
+        case CroInfoType.Default:
+          {
+            if (Patterns == null || Patterns.Length == 0 || Patterns.Contains("*.nupkg"))
+            {
+              Patterns = new string[] { "*.exe", "*.dll" };
+            }
+            if (string.IsNullOrEmpty(Partial) || Partial == "[nuget]")
+            {
+              Partial = "Programs";
+            }
+            break;
+          }
+        case CroInfoType.Ignore:
+          {
+            Patterns = new string[0];
+            Partial = string.Empty;
+            break;
+          }
+        case CroInfoType.NuGet:
+          {
+            Patterns = new string[] { "*.nupkg" };
+            Partial = "[nuget]";
+            break;
+          }
       }
     }
 
@@ -75,17 +104,6 @@ namespace CopyRepositoryOutput
       }
 
       File.WriteAllText(mFilepath, element.ToString());
-    }
-
-    public void NormalizeAndWrite()
-    {
-      if (Type == CroInfoType.NuGet)
-      {
-        Patterns = new[] { "*.nupkg" };
-        Partial = "[nuget]";
-      }
-
-      Write();
     }
   }
 }

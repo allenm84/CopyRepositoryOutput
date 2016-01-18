@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CroInfoEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CroInfoEditor.Designer.cs">
+      <DependentUpon>CroInfoEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data\CroSettings.cs" />
     <Compile Include="Data\ExtensibleDataObject.cs" />
     <Compile Include="Dialogs\BaseForm.cs">
@@ -86,6 +92,9 @@
     <Content Include="App.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\CroInfoEditor.resx">
+      <DependentUpon>CroInfoEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -17,6 +17,11 @@ namespace CopyRepositoryOutput
     [STAThread]
     static void Main(string[] args)
     {
+#if DEBUG
+      Application.EnableVisualStyles();
+      Application.SetCompatibleTextRenderingDefault(false);
+      Application.Run(new MainForm());
+#else
       if (args.Length == 0)
       {
         // duplicate myself to a temporary directory. Then, restart that application
@@ -33,6 +38,7 @@ namespace CopyRepositoryOutput
         Application.Run(new MainForm());
         DeleteMyself();
       }
+#endif
     }
 
     private static string CreateMD5Hash(byte[] bytes)

@@ -33,9 +33,9 @@
       this.btnWrite = new System.Windows.Forms.Button();
       this.btnRun = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
-      this.propertyGrid = new System.Windows.Forms.PropertyGrid();
       this.treeRepositories = new System.Windows.Forms.TreeView();
       this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+      this.croInfoEditor1 = new CopyRepositoryOutput.CroInfoEditor();
       this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
       this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
       this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -93,17 +93,6 @@
       this.label1.TabIndex = 3;
       this.label1.Text = "Repositories:";
       // 
-      // propertyGrid
-      // 
-      this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.propertyGrid.HelpVisible = false;
-      this.propertyGrid.Location = new System.Drawing.Point(0, 0);
-      this.propertyGrid.Name = "propertyGrid";
-      this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-      this.propertyGrid.Size = new System.Drawing.Size(331, 324);
-      this.propertyGrid.TabIndex = 0;
-      this.propertyGrid.ToolbarVisible = false;
-      // 
       // treeRepositories
       // 
       this.treeRepositories.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -131,10 +120,23 @@
       // 
       // splitContainer1.Panel2
       // 
-      this.splitContainer1.Panel2.Controls.Add(this.propertyGrid);
+      this.splitContainer1.Panel2.Controls.Add(this.croInfoEditor1);
       this.splitContainer1.Size = new System.Drawing.Size(544, 324);
       this.splitContainer1.SplitterDistance = 209;
+      this.splitContainer1.SplitterWidth = 8;
       this.splitContainer1.TabIndex = 0;
+      this.splitContainer1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Paint);
+      // 
+      // croInfoEditor1
+      // 
+      this.croInfoEditor1.BackColor = System.Drawing.SystemColors.Window;
+      this.croInfoEditor1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.croInfoEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.croInfoEditor1.Info = null;
+      this.croInfoEditor1.Location = new System.Drawing.Point(0, 0);
+      this.croInfoEditor1.Name = "croInfoEditor1";
+      this.croInfoEditor1.Size = new System.Drawing.Size(327, 324);
+      this.croInfoEditor1.TabIndex = 0;
       // 
       // tableLayoutPanel1
       // 
@@ -238,13 +240,13 @@
     private System.Windows.Forms.Button btnRun;
     private System.Windows.Forms.SplitContainer splitContainer1;
     private System.Windows.Forms.TreeView treeRepositories;
-    private System.Windows.Forms.PropertyGrid propertyGrid;
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
     private System.Windows.Forms.TextBox txtRepositoryPath;
     private System.Windows.Forms.Button btnBrowse;
     private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+    private CroInfoEditor croInfoEditor1;
 
   }
 }
