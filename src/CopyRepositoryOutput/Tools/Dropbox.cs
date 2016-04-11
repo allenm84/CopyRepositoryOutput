@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace System.Common.References
+namespace CopyRepositoryOutput
 {
   public static class Dropbox
   {

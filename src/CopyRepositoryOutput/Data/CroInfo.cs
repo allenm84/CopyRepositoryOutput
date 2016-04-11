@@ -22,7 +22,6 @@ namespace CopyRepositoryOutput
       Patterns = new string[] { "*.exe", "*.dll" };
     }
 
-    [Browsable(false)]
     public string Filepath { get { return mFilepath; } }
 
     public CroInfoType Type { get; set; }

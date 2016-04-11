@@ -4,13 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7BE5F591-24F6-47B1-A929-0AD1811E2365}</ProjectGuid>
+    <ProjectGuid>{203E73A1-1CC7-4C1C-BD0F-B1DFFC772886}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CopyRepositoryOutput</RootNamespace>
     <AssemblyName>CopyRepositoryOutput</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,82 +36,108 @@
   <PropertyGroup>
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\CroInfoEditor.cs">
-      <SubType>UserControl</SubType>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\BrowseForDirectoryCommand.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Broadcast\IViewModelReceiver.cs" />
+    <Compile Include="Broadcast\ViewModelBroadcaster.cs" />
+    <Compile Include="Tools\ListBoxBehavior.cs" />
+    <Compile Include="Windows\CroRunnerView.xaml.cs">
+      <DependentUpon>CroRunnerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CroInfoEditor.Designer.cs">
-      <DependentUpon>CroInfoEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Data\CroSettings.cs" />
-    <Compile Include="Data\ExtensibleDataObject.cs" />
-    <Compile Include="Dialogs\BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\CroInfo.cs" />
-    <Compile Include="Data\CroInfoNode.cs" />
     <Compile Include="Data\CroInfoType.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dialogs\RunnerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\RunnerForm.Designer.cs">
-      <DependentUpon>RunnerForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Data\CroSettings.cs" />
+    <Compile Include="Data\ExtensibleDataObject.cs" />
+    <Compile Include="Items\CroInfoTypeItem.cs" />
+    <Compile Include="Items\ValueDisplayItem.cs" />
+    <Compile Include="Tools\CroProvider.cs" />
     <Compile Include="Tools\DataContractFile.cs" />
     <Compile Include="Tools\Dropbox.cs" />
-    <Compile Include="Tools\ProgressExtensions.cs" />
-    <Compile Include="Tools\VistaFolderBrowserDialog.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Tools\Enums.cs" />
+    <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Tools\FileSystem.cs" />
+    <Compile Include="ViewModel\BaseNotifyPropertyChanged.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ConfirmViewModel.cs" />
+    <Compile Include="ViewModel\CroPatternViewModel.cs" />
+    <Compile Include="ViewModel\CroInfoViewModel.cs" />
+    <Compile Include="ViewModel\CroRunnerViewModel.cs" />
+    <Compile Include="ViewModel\CroViewModel.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\CroRunnerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.ico" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\CroInfoEditor.resx">
-      <DependentUpon>CroInfoEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\BaseForm.resx">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\RunnerForm.resx">
-      <DependentUpon>RunnerForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="App.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
