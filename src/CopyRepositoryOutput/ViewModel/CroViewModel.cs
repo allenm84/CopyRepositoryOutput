@@ -92,12 +92,20 @@ namespace CopyRepositoryOutput
         mItems.Clear();
 
         var dir = new DirectoryInfo(settings.RepositoryPath);
-        foreach (var repo in dir.EnumerateDirectories())
+        var separator = Path.DirectorySeparatorChar.ToString();
+        
+        foreach (var cro in dir.EnumerateFiles("cro.xml", SearchOption.AllDirectories))
         {
-          var path = Path.Combine(repo.FullName, "cro.xml");
-          var info = new CroInfo(path);
+          var info = new CroInfo(cro.FullName);
           info.Read();
-          mItems.Add(new CroInfoViewModel(repo.Name, info));
+
+          var name = cro.Directory.FullName.Replace(dir.FullName, string.Empty);
+          if (name.StartsWith(separator))
+          {
+            name = name.Substring(1);
+          }
+
+          mItems.Add(new CroInfoViewModel(name, info));
         }
       }
 
