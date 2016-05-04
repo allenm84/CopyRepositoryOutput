@@ -99,6 +99,10 @@ namespace CopyRepositoryOutput
         }
 
         var repoName = repoDir.Name;
+        if (!string.IsNullOrWhiteSpace(cro.Key))
+        {
+          repoName = cro.Key;
+        }
 
         var destination = Path.Combine(dropbox, cro.Partial, repoName);
         if (!Directory.Exists(destination))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace CopyRepositoryOutput
   public class CroInfoViewModel : BaseViewModel
   {
     static readonly BindingList<CroPatternViewModel> sEmptyPatterns = new BindingList<CroPatternViewModel>();
+
+    private readonly string mOriginalKey;
 
     private readonly CroInfo mInfo;
     private readonly BindingList<CroInfoTypeItem> mTypes;
@@ -25,6 +28,12 @@ namespace CopyRepositoryOutput
     {
       mInfo = info;
 
+      mOriginalKey = info.Key;
+      if (string.IsNullOrWhiteSpace(mOriginalKey))
+      {
+        mOriginalKey = new FileInfo(info.Filepath).Directory.Name;
+      }
+
       mTypes = new BindingList<CroInfoTypeItem>();
       mTypes.AddRange(CroInfoTypeItem.All);
 
@@ -35,6 +44,8 @@ namespace CopyRepositoryOutput
       mSetPatternTextCommand = new DelegateCommand(DoSetPatternText, CanSetPatternText);
 
       Name = name;
+      Key = mOriginalKey;
+
       UpdateIsEditable();
     }
 
@@ -42,6 +53,12 @@ namespace CopyRepositoryOutput
     {
       get { return GetField<string>(); }
       private set { SetField(value); }
+    }
+
+    public string Key
+    {
+      get { return GetField<string>(); }
+      set { SetField(value); }
     }
 
     public BindingList<CroInfoTypeItem> Types
@@ -206,6 +223,16 @@ namespace CopyRepositoryOutput
 
     internal void Write()
     {
+      string key = Key;
+
+      if (string.IsNullOrWhiteSpace(mInfo.Key) && key.Equals(mOriginalKey))
+      {
+        // the user didn't change the generated key, so generate it next
+        // time as well.
+        key = null;
+      }
+
+      mInfo.Key = key;
       mInfo.Patterns = mPatterns
         .OrderBy(p => p.Value)
         .Select(p => p.Value)

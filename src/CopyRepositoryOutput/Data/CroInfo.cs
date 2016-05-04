@@ -20,6 +20,7 @@ namespace CopyRepositoryOutput
       Type = CroInfoType.Default;
       Partial = "Programs";
       Patterns = new string[] { "*.exe", "*.dll" };
+      Key = null;
     }
 
     public string Filepath { get { return mFilepath; } }
@@ -27,6 +28,7 @@ namespace CopyRepositoryOutput
     public CroInfoType Type { get; set; }
     public string Partial { get; set; }
     public string[] Patterns { get; set; }
+    public string Key { get; set; }
 
     public void Read()
     {
@@ -41,6 +43,14 @@ namespace CopyRepositoryOutput
       if (attrType != null)
       {
         Type = (CroInfoType)Enum.Parse(typeof(CroInfoType), attrType.Value, true);
+      }
+
+      Key = null;
+
+      var attrKey = element.Attribute("key");
+      if (attrKey != null)
+      {
+        Key = attrKey.Value;
       }
 
       Patterns = element
@@ -92,6 +102,11 @@ namespace CopyRepositoryOutput
     {
       var element = new XElement("cro");
       element.Add(new XAttribute("type", Type));
+
+      if (!string.IsNullOrWhiteSpace(Key))
+      {
+        element.Add(new XAttribute("key", Key));
+      }
 
       if (Type == CroInfoType.Default)
       {

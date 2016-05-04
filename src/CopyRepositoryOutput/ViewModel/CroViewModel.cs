@@ -93,7 +93,7 @@ namespace CopyRepositoryOutput
 
         var dir = new DirectoryInfo(settings.RepositoryPath);
         var separator = Path.DirectorySeparatorChar.ToString();
-        
+
         foreach (var cro in dir.EnumerateFiles("cro.xml", SearchOption.AllDirectories))
         {
           var info = new CroInfo(cro.FullName);

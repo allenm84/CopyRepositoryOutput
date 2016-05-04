@@ -60,12 +60,23 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                <Label
+                    Content="Key:"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
+                <TextBox 
+                    Text="{Binding Key}" 
+                    IsEnabled="{Binding IsEditable, FallbackValue=False}"
+                    Margin="3" 
+                    Grid.Column="1" 
+                    Grid.Row="0"/>
                 <Label 
                     Content="Type:" 
                     Grid.Column="0" 
-                    Grid.Row="0"/>
+                    Grid.Row="1"/>
                 <ComboBox 
                     ItemsSource="{Binding Types}"
                     SelectedValue="{Binding Type}"
@@ -73,24 +84,24 @@
                     SelectedValuePath="Value"
                     Margin="3"
                     Grid.Column="1"
-                    Grid.Row="0"/>
+                    Grid.Row="1"/>
                 <Label 
                     Content="Partial:" 
                     Grid.Column="0" 
-                    Grid.Row="1"/>
+                    Grid.Row="2"/>
                 <TextBox 
                     Text="{Binding Partial}" 
                     IsEnabled="{Binding IsEditable, FallbackValue=False}"
                     Margin="3" 
                     Grid.Column="1" 
-                    Grid.Row="1"/>
+                    Grid.Row="2"/>
                 <Label 
                     Content="Patterns:" 
                     Grid.Column="0" 
-                    Grid.Row="2"/>
+                    Grid.Row="3"/>
                 <Grid IsEnabled="{Binding IsEditable, FallbackValue=False}"
                     Grid.Column="1" 
-                    Grid.Row="2">
+                    Grid.Row="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="*"/>
