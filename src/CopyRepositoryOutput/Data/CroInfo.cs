@@ -21,6 +21,7 @@ namespace CopyRepositoryOutput
       Partial = "Programs";
       Patterns = new string[] { "*.exe", "*.dll" };
       Key = null;
+      AddToPath = false;
     }
 
     public string Filepath { get { return mFilepath; } }
@@ -29,6 +30,7 @@ namespace CopyRepositoryOutput
     public string Partial { get; set; }
     public string[] Patterns { get; set; }
     public string Key { get; set; }
+    public bool AddToPath { get; set; }
 
     public void Read()
     {
@@ -45,6 +47,7 @@ namespace CopyRepositoryOutput
         Type = (CroInfoType)Enum.Parse(typeof(CroInfoType), attrType.Value, true);
       }
 
+      AddToPath = false;
       Key = null;
 
       var attrKey = element.Attribute("key");
@@ -62,6 +65,16 @@ namespace CopyRepositoryOutput
       if (attrPath != null && !string.IsNullOrWhiteSpace(attrPath.Value))
       {
         Partial = attrPath.Value.Trim();
+      }
+
+      var attrAddToPath = element.Attribute("addToPath");
+      if (attrAddToPath != null && !string.IsNullOrWhiteSpace(attrAddToPath.Value))
+      {
+        bool value;
+        if (bool.TryParse(attrAddToPath.Value, out value))
+        {
+          AddToPath = value;
+        }
       }
 
       Normalize();
@@ -87,12 +100,14 @@ namespace CopyRepositoryOutput
           {
             Patterns = new string[0];
             Partial = string.Empty;
+            AddToPath = false;
             break;
           }
         case CroInfoType.NuGet:
           {
             Patterns = new string[] { "*.nupkg" };
             Partial = "[nuget]";
+            AddToPath = false;
             break;
           }
       }
@@ -111,6 +126,8 @@ namespace CopyRepositoryOutput
       if (Type == CroInfoType.Default)
       {
         element.Add(new XAttribute("path", Partial));
+        element.Add(new XAttribute("addToPath", AddToPath));
+
         foreach (var pattern in Patterns)
         {
           element.Add(new XElement("pattern", pattern));

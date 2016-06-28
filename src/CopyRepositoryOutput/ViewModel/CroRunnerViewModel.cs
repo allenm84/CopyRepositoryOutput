@@ -110,6 +110,12 @@ namespace CopyRepositoryOutput
           Directory.CreateDirectory(destination);
         }
 
+        if (cro.Type == CroInfoType.Default && cro.AddToPath)
+        {
+          WriteLine("Adding {0} to PATH", destination);
+          EnvironmentVars.AddToPath(destination);
+        }
+
         int fileCount = 0;
 
         WriteLine("Destination: {0}", destination);

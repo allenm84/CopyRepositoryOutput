@@ -62,6 +62,7 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <Label
                     Content="Key:"
@@ -137,6 +138,14 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
+                <CheckBox 
+                    IsEnabled="{Binding IsEditable, FallbackValue=False}"
+                    Content="Add to PATH Environment Variable"
+                    IsChecked="{Binding AddToPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Row="4" 
+                    Grid.ColumnSpan="2"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="2">

@@ -1,4 +1,4 @@
-<cro type="Default" path="Programs">
+<cro type="Default" path="Programs" addToPath="false">
   <pattern>*.dll</pattern>
   <pattern>*.exe</pattern>
 </cro>

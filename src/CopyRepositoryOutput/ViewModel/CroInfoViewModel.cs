@@ -45,8 +45,15 @@ namespace CopyRepositoryOutput
 
       Name = name;
       Key = mOriginalKey;
+      AddToPath = info.AddToPath;
 
       UpdateIsEditable();
+    }
+
+    public bool AddToPath
+    {
+      get { return GetField<bool>(); }
+      set { SetField(value); }
     }
 
     public string Name
@@ -232,6 +239,7 @@ namespace CopyRepositoryOutput
         key = null;
       }
 
+      mInfo.AddToPath = AddToPath;
       mInfo.Key = key;
       mInfo.Patterns = mPatterns
         .OrderBy(p => p.Value)
